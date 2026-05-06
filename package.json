@@ -1,0 +1,16 @@
+{
+  "name": "musashi-receipt",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Trading receipts for the Musashi API — terminal session output and shareable web receipts.",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev:web": "pnpm --filter @musashi/receipt-web dev",
+    "demo:cli": "pnpm --filter @musashi/receipt-cli demo",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=18"
+  }
+}

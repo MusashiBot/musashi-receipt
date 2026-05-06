@@ -1,0 +1,31 @@
+{
+  "name": "musashi-receipt",
+  "version": "0.1.0",
+  "description": "Terminal trading receipts powered by the Musashi API.",
+  "type": "module",
+  "bin": {
+    "musashi-receipt": "./dist/bin.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && chmod +x dist/bin.js 2>/dev/null || true",
+    "dev": "tsc -p tsconfig.json --watch",
+    "demo": "pnpm build && node dist/bin.js --demo",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@musashi/receipt-core": "workspace:*",
+    "chalk": "^5.3.0",
+    "string-width": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
