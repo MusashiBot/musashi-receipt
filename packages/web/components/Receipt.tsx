@@ -55,6 +55,7 @@ export function ReceiptCard({ receipt, qrSvg, shareUrl }: Props) {
   const r = receipt;
   return (
     <article
+      id="receipt"
       className="relative w-[420px] bg-paper px-9 pb-0 pt-10 text-[13px] leading-[1.55] text-ink shadow-[0_24px_60px_-30px_rgba(0,0,0,0.45)]"
       style={{ fontFamily: "JetBrains Mono, ui-monospace, monospace" }}
     >

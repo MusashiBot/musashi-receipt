@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import QRCode from "qrcode";
+import { DownloadButton } from "@/components/DownloadButton";
 import { ReceiptCard } from "@/components/Receipt";
 import { getReceipt } from "@/lib/store";
 
@@ -21,7 +22,10 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
     <main className="flex min-h-screen items-start justify-center bg-[#efe8d8] py-12">
       <div className="flex flex-col items-center gap-4">
         <ReceiptCard receipt={receipt} qrSvg={qrSvg} shareUrl={shareUrl} />
-        <ShareBar shareUrl={shareUrl} />
+        <div className="flex items-center gap-3">
+          <DownloadButton targetId="receipt" filename={`musashi-${receipt.id}`} />
+          <ShareBar shareUrl={shareUrl} />
+        </div>
       </div>
     </main>
   );
