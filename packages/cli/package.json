@@ -1,6 +1,6 @@
 {
   "name": "musashi-receipt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Terminal trading receipts powered by the Musashi API. Prints a colored signal-receipt summary of your bot's last trading window, with an optional one-flag publish to a shareable web receipt.",
   "keywords": [
     "musashi",

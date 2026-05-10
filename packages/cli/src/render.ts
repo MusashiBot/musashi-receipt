@@ -119,73 +119,50 @@ export function renderTable(rows: SessionRow[]): string {
 
 export function renderSectionResults(receipt: Receipt): string {
   const label = chalk.green.bold(
-    `SECTION 1 RESULTS  (${receipt.header.window.replace(" — ", "–")} UTC, 0s, n=${receipt.rows.length})`,
+    `RESULTS  (${receipt.header.window.replace(" — ", "–")} UTC, n=${receipt.rows.length})`,
   );
   return `\n${label}\n`;
 }
 
 /**
- * Two side-by-side boxes:
- *   ┌────────────────────────┐  ┌────────────────────────┐
- *   │ BEFORE  (buggy API)    │  │ AFTER   (fixed API)    │
- *   │                        │  │                        │
- *   │ Trades :  8/28         │  │ Trades : 10/28         │
- *   │ PnL    :  $ 13.58      │  │ PnL    :  $ 19.67      │
- *   └────────────────────────┘  └────────────────────────┘
+ *   ┌────────────────────────┐
+ *   │ RESULTS                │
+ *   │                        │
+ *   │ Trades : 10/28         │
+ *   │ PnL    : +$19.67       │
+ *   └────────────────────────┘
  */
-export function renderBeforeAfter(receipt: Receipt): string {
+export function renderResultsBox(receipt: Receipt): string {
   const W = 38;
   const top = "┌" + "─".repeat(W - 2) + "┐";
   const mid = "│" + " ".repeat(W - 2) + "│";
   const bot = "└" + "─".repeat(W - 2) + "┘";
-
   const inner = (left: string) => "│ " + pad(left, W - 4) + " │";
 
-  const beforeLines = [
+  const pnl = receipt.totalEdge;
+  const pnlStr = `${pnl >= 0 ? "+" : ""}$${pnl.toFixed(2)}`;
+  const pnlColor = pnl >= 0 ? chalk.green : chalk.red;
+
+  const lines = [
     top,
-    inner(chalk.bold("BEFORE  (buggy API)")),
+    inner(chalk.bold("RESULTS")),
     mid,
-    inner(`Trades : ${chalk.red(`  ${receipt.summary.before.trades}`)}`),
-    inner(`PnL    : ${chalk.red(`$ ${receipt.summary.before.pnl.toFixed(2)}`)}`),
+    inner(`Trades : ${chalk.green(receipt.summary.after.trades)}`),
+    inner(`PnL    : ${pnlColor(pnlStr)}`),
     bot,
   ];
-  const afterLines = [
-    top,
-    inner(chalk.bold("AFTER   (fixed API)")),
-    mid,
-    inner(`Trades : ${chalk.green(`  ${receipt.summary.after.trades}`)}`),
-    inner(`PnL    : ${chalk.green(`$ ${receipt.summary.after.pnl.toFixed(2)}`)}`),
-    bot,
-  ];
-
-  const out: string[] = [];
-  for (let i = 0; i < beforeLines.length; i++) {
-    out.push(`${beforeLines[i]}  ${afterLines[i]}`);
-  }
-  return "\n" + out.join("\n") + "\n";
-}
-
-export function renderFooter(receipt: Receipt): string {
-  const recov = chalk.green.bold(
-    `Revenue recovered : +$${receipt.summary.revenueRecovered.toFixed(2)}  ` +
-    chalk.green(`over ${receipt.rows.length} real-priced signals`),
-  );
-  const unlock = chalk.cyan(
-    `Signals unlocked  : ${receipt.summary.signalsUnlocked} previously rejected trades now execute`,
-  );
-  return `\n${recov}\n${unlock}\n`;
+  return "\n" + lines.join("\n") + "\n";
 }
 
 /* ---------------------- top-level ---------------------- */
 
 export function renderReceipt(receipt: Receipt): string {
   const parts = [
-    renderSectionHeader("SECTION 1 — Bugs 1 & 2: Edge Calculation & Direction"),
+    renderSectionHeader("MUSASHI — Edge Calculation & Direction"),
     renderStatus(receipt),
     renderTable(receipt.rows),
     renderSectionResults(receipt),
-    renderBeforeAfter(receipt),
-    renderFooter(receipt),
+    renderResultsBox(receipt),
   ];
   return parts.join("");
 }
